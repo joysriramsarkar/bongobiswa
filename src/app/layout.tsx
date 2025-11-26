@@ -33,12 +33,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const pathname = headers().get("x-next-pathname") || "/";
+  const headersList = await headers();
+  const pathname = headersList.get("x-next-pathname") || "/";
 
   return (
     <html lang="bn" suppressHydrationWarning>

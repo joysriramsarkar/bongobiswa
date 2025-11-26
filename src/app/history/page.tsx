@@ -131,7 +131,7 @@ const CATEGORIES = {
 };
 
 function TimelineEvent({ event, index, isSelected, onSelect }) {
-  const { classes } = useThemeClasses();
+  const classes = useThemeClasses();
   const category = CATEGORIES[event.category];
   const Icon = category.icon;
 
@@ -144,16 +144,15 @@ function TimelineEvent({ event, index, isSelected, onSelect }) {
       className={`flex items-center mb-12 ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}
     >
       {/* Content */}
-      <div className={`md:w-5/12 ${index % 2 === 0 ? 'md:pr-8 md:text-right' : 'md:pl-8'}`}>
-        <motion.div
-          whileHover={{ scale: 1.02 }}
-          onClick={() => onSelect(event)}
-          className={`cursor-pointer p-6 rounded-lg border-2 transition-all duration-300 ${
-            isSelected 
-              ? 'border-amber-600 shadow-xl bg-amber-50' 
-              : 'border-amber-200 hover:border-amber-400 hover:shadow-lg'
-          }`}
-        >
+      <motion.div
+        whileHover={{ scale: 1.02 }}
+        onClick={() => onSelect(event)}
+        className={`md:w-5/12 ${index % 2 === 0 ? 'md:pr-8 md:text-right' : 'md:pl-8'} cursor-pointer p-6 rounded-lg border-2 transition-all duration-300 ${
+          isSelected
+            ? 'border-amber-600 shadow-xl bg-amber-50'
+            : 'border-amber-200 hover:border-amber-400 hover:shadow-lg'
+        }`}
+      >
           <div className="flex items-center space-x-2 mb-3">
             <Badge className={`${category.color} text-white`}>
               <Icon className="w-3 h-3 mr-1" />
@@ -171,8 +170,8 @@ function TimelineEvent({ event, index, isSelected, onSelect }) {
             <MapPin className="w-4 h-4 ml-3 mr-1" />
             <span className="font-bengali">{event.location}</span>
           </div>
-        </motion.div>
-      </div>
+        </div>
+      </motion.div>
 
       {/* Timeline Dot */}
       <div className="md:w-2/12 flex justify-center">
@@ -196,10 +195,10 @@ function TimelineEvent({ event, index, isSelected, onSelect }) {
 }
 
 function EventModal({ event, isOpen, onClose }) {
-  const { classes } = useThemeClasses();
-  const category = CATEGORIES[event.category];
-
   if (!event) return null;
+
+  const classes = useThemeClasses();
+  const category = CATEGORIES[event.category];
 
   return (
     <AnimatePresence>
@@ -290,7 +289,7 @@ export default function HistoryPage() {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAutoPlay, setIsAutoPlay] = useState(false);
-  const { classes } = useThemeClasses();
+  const classes = useThemeClasses();
 
   const handleEventSelect = (event) => {
     setSelectedEvent(event);
