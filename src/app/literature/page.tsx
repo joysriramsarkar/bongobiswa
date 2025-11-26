@@ -164,6 +164,7 @@ const FAMOUS_AUTHORS = [
     name: 'জীবনানন্দ দাশ',
     birth: 1899,
     death: 1954,
+    works: 250, // আনুমানিক সংখ্যা যোগ করা হয়েছে
     description: 'আধুনিক বাংলা কবিতার প্রধান পুরোধা। অদ্ভুতুড়ে কবিতার স্রষ্টা।',
     avatar: '/api/placeholder/100/100',
     famousWorks: ['বনলতা সেন', 'মহাপৃথিবী', 'সাতটি তারার তিমির', 'শেষ প্রশ্ন']
@@ -171,7 +172,7 @@ const FAMOUS_AUTHORS = [
 ];
 
 function BookCard({ book, category }) {
-  const { classes } = useThemeClasses();
+  const classes = useThemeClasses();
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -228,7 +229,7 @@ function BookCard({ book, category }) {
 }
 
 function AuthorSpotlight({ author }) {
-  const { classes } = useThemeClasses();
+  const classes = useThemeClasses();
 
   return (
     <motion.div
@@ -271,7 +272,7 @@ function AuthorSpotlight({ author }) {
 export default function LiteraturePage() {
   const [selectedCategory, setSelectedCategory] = useState('কবিতা');
   const [searchTerm, setSearchTerm] = useState('');
-  const { classes } = useThemeClasses();
+  const classes = useThemeClasses();
 
   const filteredWorks = LITERATURE_WORKS[selectedCategory]?.filter(book =>
     book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||

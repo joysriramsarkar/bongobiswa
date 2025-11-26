@@ -141,7 +141,7 @@ const CUISINE = [
     items: ['ভাত', 'ডাল', 'ভাজি', 'মাছ', 'মাংস'],
     regions: ['সারা বাংলা'],
     occasions: ['দৈনিক খাবার'],
-    specialties: ['পাঁচমিশালি', 'শুঁটকি', 'ঝোল'],
+    specialities: ['পাঁচমিশালি', 'শুঁটকি', 'ঝোল'],
     image: '/api/placeholder/300/200'
   },
   {
@@ -151,7 +151,7 @@ const CUISINE = [
     items: ['ইলিশ ভাজা', 'ইলিশ পোলাও', 'ইলিশ ঝোল'],
     regions: ['পদ্মা অববাহিকা', 'মেঘনা', 'চট্টগ্রাম'],
     occasions: ['পহেলা বৈশাখ', 'বিয়ে', 'অতিথি আপ্যায়ন'],
-    specialties: ['ভাপা ইলিশ', 'শুঁটকি ইলিশ', 'ইলিশ ভর্তা'],
+    specialities: ['ভাপা ইলিশ', 'শুঁটকি ইলিশ', 'ইলিশ ভর্তা'],
     image: '/api/placeholder/300/200'
   },
   {
@@ -161,7 +161,7 @@ const CUISINE = [
     items: ['পিঠে', 'পায়েস', 'রসমালাই', 'সন্দেশ'],
     regions: ['সারা বাংলা'],
     occasions: ['পৌষ সংক্রান্তি', 'বিয়ে', 'উৎসব'],
-    specialties: ['ভাপা পিঠে', 'পাকন পিঠে', 'চিতই পিঠে'],
+    specialities: ['ভাপা পিঠে', 'পাকন পিঠে', 'চিতই পিঠে'],
     image: '/api/placeholder/300/200'
   },
   {
@@ -171,7 +171,7 @@ const CUISINE = [
     items: ['চা', 'বিস্কুট', 'সমুচা', 'পরোটা'],
     regions: ['সিলেট', 'চট্টগ্রাম', 'ঢাকা'],
     occasions: ['বিকেলের আড্ডা', 'অতিথি আপ্যায়ন'],
-    specialties: ['সাত রঙা চা', 'মালাই চা', 'লেমন চা'],
+    specialities: ['সাত রঙা চা', 'মালাই চা', 'লেমন চা'],
     image: '/api/placeholder/300/200'
   }
 ];
@@ -207,7 +207,7 @@ const TRADITIONAL_DRESSES = [
 ];
 
 function FestivalCard({ festival }) {
-  const { classes } = useThemeClasses();
+  const classes = useThemeClasses();
 
   return (
     <motion.div
@@ -250,7 +250,7 @@ function FestivalCard({ festival }) {
 }
 
 function FolkArtCard({ art }) {
-  const { classes } = useThemeClasses();
+  const classes = useThemeClasses();
 
   return (
     <motion.div
@@ -289,10 +289,10 @@ function FolkArtCard({ art }) {
 
 export default function CulturePage() {
   const [selectedCategory, setSelectedCategory] = useState('উৎসব');
-  const { classes } = useThemeClasses() || {};
+  const classes = useThemeClasses();
 
   return (
-    <div className={`min-h-screen ${classes?.background || ''} ${classes?.text || ''}`}>
+    <div className={`min-h-screen ${classes.background} ${classes.text}`}>
       {/* Header */}
       <motion.section
         initial={{ opacity: 0, y: 30 }}
@@ -393,7 +393,7 @@ export default function CulturePage() {
                         </div>
                       </div>
                       
-                      {food.specialties && (
+                      {food.specialities && (
                         <div className="text-sm text-gray-600">
                           <span className="font-semibold">বিশেষত্ব:</span> {food.specialities.join(', ')}
                         </div>

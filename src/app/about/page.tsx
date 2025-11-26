@@ -147,7 +147,7 @@ const TECHNOLOGY_STACK = [
 ];
 
 function TeamMemberCard({ member }) {
-  const { classes } = useThemeClasses();
+  const classes = useThemeClasses();
 
   return (
     <motion.div
@@ -200,7 +200,7 @@ function TeamMemberCard({ member }) {
 }
 
 function MissionCard({ mission, index }) {
-  const { classes } = useThemeClasses();
+  const classes = useThemeClasses();
   const Icon = mission.icon;
 
   return (
@@ -244,7 +244,7 @@ function TechStackCard({ tech }) {
 }
 
 export default function AboutPage() {
-  const { classes } = useThemeClasses();
+  const classes = useThemeClasses();
 
   return (
     <div className={`min-h-screen ${classes.background} ${classes.text}`}>
