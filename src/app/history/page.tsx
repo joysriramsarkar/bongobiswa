@@ -170,7 +170,6 @@ function TimelineEvent({ event, index, isSelected, onSelect }) {
             <MapPin className="w-4 h-4 ml-3 mr-1" />
             <span className="font-bengali">{event.location}</span>
           </div>
-        </div>
       </motion.div>
 
       {/* Timeline Dot */}
