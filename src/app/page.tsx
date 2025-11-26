@@ -9,6 +9,7 @@ import { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { ArrowRight, Globe, BookOpen, Users, Microscope, Sparkles, Play } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useThemeClasses } from '@/lib/themes/provider';
@@ -16,10 +17,10 @@ import { toBengaliNumber } from '@/lib/bengali/numbers';
 
 // Mock data for statistics
 const STATS = [
-  { number: 1000, label: 'বছরের ইতিহাস', icon: Globe },
-  { number: 230, label: 'কোটি মানুষ', icon: Users },
-  { number: 100000, label: 'সাহিত্যকর্ম', icon: BookOpen },
-  { number: 50, label: 'বিজ্ঞানী', icon: Microscope }
+  { number: 1300, label: 'বছরের ইতিহাস', icon: Globe },
+  { number: 280, label: 'কোটিরও বেশি মানুষ', icon: Users },
+  { number: 1000, label: 'হাজারেরও বেশি সাহিত্যকর্ম', icon: BookOpen },
+  { number: 50, label: 'এর বেশি বিজ্ঞানী', icon: Microscope }
 ];
 
 const MODULES = [
@@ -29,7 +30,8 @@ const MODULES = [
     href: '/history',
     icon: Globe,
     color: 'bg-amber-600',
-    features: ['টাইমলাইন', 'ঐতিহাসিক ঘটনা', 'ব্যক্তিত্ব', 'স্থাপত্য']
+    features: ['টাইমলাইন', 'ঐতিহাসিক ঘটনা', 'ব্যক্তিত্ব', 'স্থাপত্য'],
+    image: '/history.jpg'
   },
   {
     title: 'সাহিত্য',
@@ -37,7 +39,8 @@ const MODULES = [
     href: '/literature',
     icon: BookOpen,
     color: 'bg-gray-800',
-    features: ['কবিতা', 'উপন্যাস', 'নাটক', 'লোকসাহিত্য']
+    features: ['কবিতা', 'উপন্যাস', 'নাটক', 'লোকসাহিত্য'],
+    image: '/literature.jpg'
   },
   {
     title: 'প্রযুক্তি',
@@ -45,7 +48,8 @@ const MODULES = [
     href: '/technology',
     icon: Microscope,
     color: 'bg-cyan-500',
-    features: ['বাংলা NLP', 'ওপেন সোর্স', 'সফটওয়্যার', 'গবেষণা']
+    features: ['বাংলা NLP', 'ওপেন সোর্স', 'সফটওয়্যার', 'গবেষণা'],
+    image: '/technology.jpg'
   },
   {
     title: 'সংস্কৃতি',
@@ -53,7 +57,8 @@ const MODULES = [
     href: '/culture',
     icon: Users,
     color: 'bg-pink-500',
-    features: ['উৎসব', 'লোকশিল্প', 'খাবার', 'পোশাক']
+    features: ['উৎসব', 'লোকশিল্প', 'খাবার', 'পোশাক'],
+    image: '/culture.jpg'
   }
 ];
 
@@ -125,7 +130,7 @@ function HeroSection() {
           className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 font-bengali"
           style={{ y: smoothY }}
         >
-          <span className="text-red-600">হাজার</span>
+          <span className="text-red-600">১৩০০</span>
           <br />
           <span className="text-yellow-600">বছরের</span>
           <br />
@@ -256,6 +261,7 @@ function ModulesSection() {
                 <Link href={module.href}>
                   <Card className="h-full hover:shadow-2xl transition-all duration-300 border-0 overflow-hidden">
                     <div className={`h-2 ${module.color}`} />
+                    <Image src={module.image} alt={module.title} width={500} height={300} className="w-full h-48 object-cover" />
                     <CardContent className="p-8">
                       <div className="flex items-start space-x-4">
                         <div className={`w-12 h-12 ${module.color} rounded-lg flex items-center justify-center flex-shrink-0`}>
