@@ -136,7 +136,7 @@ const FAMOUS_AUTHORS = [
     death: 1941,
     works: 2230,
     description: 'বাংলা সাহিত্যের অপরিহার্য ব্যক্তিত্ব। গীতাঞ্জলির জন্য নোবেল পুরস্কারপ্রাপ্ত।',
-    avatar: '/api/placeholder/100/100',
+    avatar: 'https://upload.wikimedia.org/wikipedia/commons/d/d1/Rabindranath_Tagore.jpg',
     famousWorks: ['গীতাঞ্জলি', 'গোরা', 'চোখের বালি', 'ঘরে বাইরে']
   },
   {
@@ -168,6 +168,16 @@ const FAMOUS_AUTHORS = [
     description: 'আধুনিক বাংলা কবিতার প্রধান পুরোধা। অদ্ভুতুড়ে কবিতার স্রষ্টা।',
     avatar: '/api/placeholder/100/100',
     famousWorks: ['বনলতা সেন', 'মহাপৃথিবী', 'সাতটি তারার তিমির', 'শেষ প্রশ্ন']
+  },
+  {
+    id: 5,
+    name: 'সত্যজিৎ রায়',
+    birth: 1921,
+    death: 1992,
+    works: 50,
+    description: 'চলচ্চিত্র নির্মাতা, লেখক, এবং চিত্রকর। ফেলুদা ও প্রফেসর শঙ্কু চরিত্রের স্রষ্টা।',
+    avatar: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Satyajit_Ray_in_New_York_(cropped).jpg/250px-Satyajit_Ray_in_New_York_(cropped).jpg',
+    famousWorks: ['পথের পাঁচালী', 'ফেলুদা', 'প্রোফেসর শঙ্কু', 'সোনার কেল্লা']
   }
 ];
 
@@ -177,7 +187,7 @@ function BookCard({ book, category }) {
 
   return (
     <motion.div
-      whileHover={{ scale: 1.05, rotateY: 5 }}
+      whileHover={{ scale: 1.05 }}
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
       className="relative cursor-pointer"
