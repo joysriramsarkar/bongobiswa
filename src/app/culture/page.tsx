@@ -5,21 +5,19 @@
 
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { 
-  Music, Palette, Utensils, Theater, MapPin, 
-  Calendar, Camera, Heart, Share2, Play,
-  Users, Sparkles, Globe, Award
+  Music, Palette, Utensils, Calendar, Play,
+  Users
 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useThemeClasses } from '@/lib/themes/provider';
 import { toBengaliNumber } from '@/lib/bengali';
+import { WikiImage } from '@/components/WikiImage';
 
-// Mock culture data
+// Mock culture data with Wikidata IDs
 const CULTURE_CATEGORIES = {
   'উৎসব': { 
     icon: Calendar, 
@@ -63,7 +61,8 @@ const FESTIVALS = [
     traditions: ['হালখাতা', 'পান্তা ভাত', 'বৈশাখী মেলা', 'মঙ্গল শোভাযাত্রা'],
     regions: ['সারা বাংলাদেশ', 'পশ্চিমবঙ্গ'],
     significance: 'নতুন বছরের শুভেচ্ছা ও আনন্দ বিতরণ',
-    image: '/api/placeholder/400/300'
+    image: 'https://placehold.co/400x300',
+    wikidataId: 'Q1191069'
   },
   {
     id: 2,
@@ -74,7 +73,8 @@ const FESTIVALS = [
     traditions: ['পুজো পণ্ডাল', 'ঢাকের বাদ্য', 'ধুনুচি নাচ', 'ভোগ বিতরণ'],
     regions: ['ঢাকা', 'কলকাতা', 'সিলেট', 'চট্টগ্রাম'],
     significance: 'মঙ্গলের প্রতীক, শুভের সমাগম',
-    image: '/api/placeholder/400/300'
+    image: 'https://placehold.co/400x300',
+    wikidataId: 'Q10214'
   },
   {
     id: 3,
@@ -85,7 +85,8 @@ const FESTIVALS = [
     traditions: ['ঈদের নামাজ', 'ঈদগাহ', 'সেমাই-শিরনি', 'ঈদি পোশাক'],
     regions: ['সারা বাংলাদেশ', 'পশ্চিমবঙ্গ'],
     significance: 'ভ্রাতৃত্ব ও সম্প্রীতির বন্ধন',
-    image: '/api/placeholder/400/300'
+    image: 'https://placehold.co/400x300',
+    wikidataId: 'Q48433'
   },
   {
     id: 4,
@@ -96,7 +97,8 @@ const FESTIVALS = [
     traditions: ['পিঠে উৎসব', 'ঘোড়ায় ঘোড়ায় খেলা', 'মেলা', 'লাঠিখেলা'],
     regions: ['ঢাকা', 'রাজশাহী', 'যশোর', 'কুষ্টিয়া'],
     significance: 'ফসলের আনন্দ ও কৃতজ্ঞতা প্রকাশ',
-    image: '/api/placeholder/400/300'
+    image: 'https://placehold.co/400x300',
+    wikidataId: 'Q3346128'
   }
 ];
 
@@ -109,17 +111,20 @@ const FOLK_ARTS = [
     regions: ['ঢাকা', 'ময়মনসিংহ', 'সিলেট'],
     occasions: ['বিয়ে', 'ব্রত', 'পূজা'],
     significance: 'শুভের প্রতীক, সৌন্দর্যের বহিঃপ্রকাশ',
-    image: '/api/placeholder/300/200'
+    image: 'https://placehold.co/300x200',
+    wikidataId: 'Q3346132'
   },
   {
     id: 2,
     name: 'জামদানি শাড়ি',
+    term: 'জামদানি',
     description: 'বাংলার বিখ্যাত তাঁতশিল্প। ইউনেস্কো কর্তৃক স্বীকৃত বিশ্ব ঐতিহ্যবাহী কারুশিল্প।',
     materials: ['সুতি', 'সোনালী সুতো', 'সুতির তাঁত'],
     regions: ['ঢাকা', 'নারায়ণগঞ্জ', 'মানিকগঞ্জ'],
     occasions: ['বিয়ে', 'ঈদ', 'পূজা'],
     significance: 'বাঙালি নারীর সৌন্দর্য ও মর্যাদার প্রতীক',
-    image: '/api/placeholder/300/200'
+    image: 'https://placehold.co/300x200',
+    wikidataId: 'Q612760'
   },
   {
     id: 3,
@@ -129,17 +134,20 @@ const FOLK_ARTS = [
     regions: ['রাজশাহী', 'রংপুর', 'দিনাজপুর'],
     occasions: ['শীতকাল', 'বিয়ে', 'নবজাতকের জন্য'],
     significance: 'মায়ের ভালোবাসা ও গ্রামীণ জীবনের কাহিনি',
-    image: '/api/placeholder/300/200'
+    image: 'https://placehold.co/300x200',
+    wikidataId: 'Q3346399'
   },
   {
     id: 4,
     name: 'পুতুল নাচ',
+    term: 'পুতুলনাচ',
     description: 'ঐতিহ্যবাহী মন্দিরা নৃত্য। কাঠের পুতুল দিয়ে গল্প বলা হয়।',
     materials: ['কাঠ', 'রং', 'কাপড়'],
     regions: ['ময়মনসিংহ', 'ঢাকা', 'কুমিল্লা'],
     occasions: ['মেলা', 'উৎসব', 'গ্রাম্য অনুষ্ঠান'],
     significance: 'গল্প বলার ঐতিহ্যবাহী মাধ্যম',
-    image: '/api/placeholder/300/200'
+    image: 'https://placehold.co/300x200',
+    wikidataId: 'Q193393'
   }
 ];
 
@@ -147,42 +155,50 @@ const CUISINE = [
   {
     id: 1,
     name: 'ভাত ও ভোজ',
+    term: 'ভাত',
     description: 'বাঙালির প্রধান খাবার। ভাতের সাথে বিভিন্ন তরকারি ও ভাজা।',
     items: ['ভাত', 'ডাল', 'ভাজি', 'মাছ', 'মাংস'],
     regions: ['সারা বাংলা'],
     occasions: ['দৈনিক খাবার'],
     specialities: ['পাঁচমিশালি', 'শুঁটকি', 'ঝোল'],
-    image: '/api/placeholder/300/200'
+    image: 'https://placehold.co/300x200',
+    wikidataId: 'Q1269205'
   },
   {
     id: 2,
     name: 'ইলিশ মাছ',
+    term: 'ইলিশ',
     description: 'বাংলার জাতীয় মাছ। পদ্মা নদীর ইলিশ বিখ্যাত।',
     items: ['ইলিশ ভাজা', 'ইলিশ পোলাও', 'ইলিশ ঝোল'],
     regions: ['পদ্মা অববাহিকা', 'মেঘনা', 'চট্টগ্রাম'],
     occasions: ['পহেলা বৈশাখ', 'বিয়ে', 'অতিথি আপ্যায়ন'],
     specialities: ['ভাপা ইলিশ', 'শুঁটকি ইলিশ', 'ইলিশ ভর্তা'],
-    image: '/api/placeholder/300/200'
+    image: 'https://placehold.co/300x200',
+    wikidataId: 'Q634123'
   },
   {
     id: 3,
     name: 'পিঠে পুলি',
+    term: 'পিঠা',
     description: 'বাঙালির ঐতিহ্যবাহী মিষ্টি। বিভিন্ন উৎসবে পিঠে তৈরি হয়।',
     items: ['পিঠে', 'পায়েস', 'রসমালাই', 'সন্দেশ'],
     regions: ['সারা বাংলা'],
     occasions: ['পৌষ সংক্রান্তি', 'বিয়ে', 'উৎসব'],
     specialities: ['ভাপা পিঠে', 'পাকন পিঠে', 'চিতই পিঠে'],
-    image: '/api/placeholder/300/200'
+    image: 'https://placehold.co/300x200',
+    wikidataId: 'Q3346413'
   },
   {
     id: 4,
     name: 'চা ও নাস্তা',
+    term: 'চা',
     description: 'বিকেলের চা বাঙালি সংস্কৃতির অংশ। চায়ের সাথে বিভিন্ন নাস্তা।',
     items: ['চা', 'বিস্কুট', 'সমুচা', 'পরোটা'],
     regions: ['সিলেট', 'চট্টগ্রাম', 'ঢাকা'],
     occasions: ['বিকেলের আড্ডা', 'অতিথি আপ্যায়ন'],
     specialities: ['সাত রঙা চা', 'মালাই চা', 'লেমন চা'],
-    image: '/api/placeholder/300/200'
+    image: 'https://placehold.co/300x200',
+    wikidataId: 'Q6097'
   }
 ];
 
@@ -194,16 +210,19 @@ const TRADITIONAL_DRESSES = [
     types: ['জামদানি', 'টাঙ্গাইল', 'মসলিন', 'কাতান'],
     materials: ['সুতি', 'সিল্ক', 'জর্জেট'],
     occasions: ['বিয়ে', 'পূজা', 'ঈদ', 'অনুষ্ঠান'],
-    image: '/api/placeholder/300/200'
+    image: 'https://placehold.co/300x200',
+    wikidataId: 'Q172863'
   },
   {
     id: 2,
     name: 'পাঞ্জাবি',
+    term: 'পাঞ্জাবি (পোশাক)', // Disambiguation might be needed, but Punjabi (clothing) doesn't exist in BN Wiki maybe. 'পাঞ্জাবি' refers to the people? Let's try 'পাঞ্জাবি' first.
     description: 'বাঙালি পুরুষের ঐতিহ্যবাহী পোশাক। আরামদায়ক ও সুন্দর।',
     types: ['হাতের কাজ', 'ব্লক প্রিন্ট', 'এমব্রয়ডারি'],
     materials: ['সুতি', 'সিল্ক', 'লিনেন'],
     occasions: ['ঈদ', 'বিয়ে', 'অনুষ্ঠান'],
-    image: '/api/placeholder/300/200'
+    image: 'https://placehold.co/300x200',
+    wikidataId: 'Q1594953'
   },
   {
     id: 3,
@@ -212,7 +231,8 @@ const TRADITIONAL_DRESSES = [
     types: ['হাতের লুঙ্গি', 'চেক লুঙ্গি', 'সাদা লুঙ্গি'],
     materials: ['সুতি', 'লিনেন'],
     occasions: ['দৈনিক ব্যবহার', 'ঘরের কাজ'],
-    image: '/api/placeholder/300/200'
+    image: 'https://placehold.co/300x200',
+    wikidataId: 'Q933924'
   }
 ];
 
@@ -223,7 +243,8 @@ const MUSIC_GENRES = [
     description: 'রবীন্দ্রনাথ ঠাকুর রচিত ও সুরারোপিত গান। বাংলা সংগীতের এক স্বতন্ত্র ধারা।',
     famousArtists: ['হেমন্ত মুখোপাধ্যায়', ' কণিকা বন্দ্যোপাধ্যায়', 'সুচিত্রা মিত্র'],
     popularSongs: ['আমার সোনার বাংলা', 'পুরানো সেই দিনের কথা', 'যদি তোর ডাক শুনে কেউ না আসে'],
-    image: '/api/placeholder/300/200'
+    image: 'https://placehold.co/300x200',
+    wikidataId: 'Q1323789'
   },
   {
     id: 2,
@@ -231,15 +252,18 @@ const MUSIC_GENRES = [
     description: 'কাজী নজরুল ইসলাম রচিত ও সুরারোপিত গান। প্রেম, বিদ্রোহ ও আধ্যাত্মিকতার অপূর্ব সমন্বয়।',
     famousArtists: ['ফিরোজা বেগম', 'সোহরাব হোসেন', 'মানবেন্দ্র মুখোপাধ্যায়'],
     popularSongs: ['মোর প্রিয়া হবে এসো রানী', 'কারার ঐ লৌহকপাট', 'মসজিদেরই পাশে আমার কবর দিও ভাই'],
-    image: '/api/placeholder/300/200'
+    image: 'https://placehold.co/300x200',
+    wikidataId: 'Q2005080'
   },
   {
     id: 3,
     name: 'বাউল সংগীত',
+    term: 'বাউল',
     description: 'বাংলার লোকসংগীতের এক আধ্যাত্মিক ধারা। লালন শাহ এই ধারার প্রধান পুরুষ।',
     famousArtists: ['লালন শাহ', 'শাহ আব্দুল করিম', 'পবন দাস বাউল'],
     popularSongs: ['মিলন হবে কত দিনে', 'খাঁচার ভিতর অচিন পাখি', 'গাড়ি চলে না'],
-    image: '/api/placeholder/300/200'
+    image: 'https://placehold.co/300x200',
+    wikidataId: 'Q492062'
   }
 ];
 
@@ -247,20 +271,24 @@ const CLASSIC_MOVIES = [
   {
     id: 1,
     name: 'পথের পাঁচালী',
+    term: 'পথের পাঁচালী (চলচ্চিত্র)', // Disambiguation from novel
     director: 'সত্যজিৎ রায়',
     year: 1955,
     description: 'বিভূতিভূষণ বন্দ্যোপাধ্যায়ের উপন্যাস অবলম্বনে নির্মিত। অপু ট্রিলজির প্রথম চলচ্চিত্র।',
     awards: ['কান চলচ্চিত্র উৎসবে শ্রেষ্ঠ মানব প্রামাণ্যচিত্র পুরস্কার'],
-    image: '/api/placeholder/400/300'
+    image: 'https://placehold.co/400x300',
+    wikidataId: 'Q622380'
   },
   {
     id: 2,
     name: 'তিতাস একটি নদীর নাম',
+    term: 'তিতাস একটি নদীর নাম (চলচ্চিত্র)',
     director: 'ঋত্বিক ঘটক',
     year: 1973,
     description: 'অদ্বৈত মল্লবর্মণের উপন্যাস অবলম্বনে নির্মিত। মালো সম্প্রদায়ের জীবনচিত্র।',
     awards: ['Sight & Sound ম্যাগাজিনের জরিপে সর্বকালের সেরা ১০টি বাংলাদেশী চলচ্চিত্রের একটি'],
-    image: '/api/placeholder/400/300'
+    image: 'https://placehold.co/400x300',
+    wikidataId: 'Q1287962'
   },
   {
     id: 3,
@@ -269,21 +297,22 @@ const CLASSIC_MOVIES = [
     year: 1970,
     description: '১৯৫২ সালের ভাষা আন্দোলনকে কেন্দ্র করে নির্মিত একটি রূপকধর্মী চলচ্চিত্র।',
     awards: ['শ্রেষ্ঠ চলচ্চিত্র, পাকিস্তান চলচ্চিত্র উৎসব'],
-    image: '/api/placeholder/400/300'
+    image: 'https://placehold.co/400x300',
+    wikidataId: 'Q6192055'
   }
 ];
 
 function FestivalCard({ festival }) {
-  const classes = useThemeClasses();
-
   return (
     <motion.div
       whileHover={{ scale: 1.05 }}
       className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow"
     >
       <div className="relative">
-        <img 
-          src={festival.image} 
+        <WikiImage
+          id={festival.wikidataId}
+          term={festival.term || festival.name}
+          fallback={festival.image}
           alt={festival.name}
           className="w-full h-48 object-cover"
         />
@@ -317,16 +346,16 @@ function FestivalCard({ festival }) {
 }
 
 function FolkArtCard({ art }) {
-  const classes = useThemeClasses();
-
   return (
     <motion.div
       whileHover={{ scale: 1.02 }}
       className="bg-white rounded-lg p-6 shadow-lg hover:shadow-xl transition-shadow"
     >
       <div className="flex items-start space-x-4">
-        <img 
-          src={art.image} 
+        <WikiImage
+          id={art.wikidataId}
+          term={art.term || art.name}
+          fallback={art.image}
           alt={art.name}
           className="w-24 h-24 rounded-lg object-cover"
         />
@@ -440,8 +469,10 @@ export default function CulturePage() {
                   className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow"
                 >
                   <div className="flex">
-                    <img 
-                      src={food.image} 
+                    <WikiImage
+                      id={food.wikidataId}
+                      term={food.term || food.name}
+                      fallback={food.image}
                       alt={food.name}
                       className="w-32 h-32 object-cover"
                     />
@@ -480,8 +511,10 @@ export default function CulturePage() {
                   whileHover={{ scale: 1.05 }}
                   className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow"
                 >
-                  <img 
-                    src={dress.image} 
+                  <WikiImage
+                    id={dress.wikidataId}
+                    term={dress.term || dress.name}
+                    fallback={dress.image}
                     alt={dress.name}
                     className="w-full h-48 object-cover"
                   />
@@ -517,8 +550,10 @@ export default function CulturePage() {
                   whileHover={{ scale: 1.05 }}
                   className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow"
                 >
-                  <img 
-                    src={genre.image} 
+                  <WikiImage
+                    id={genre.wikidataId}
+                    term={genre.term || genre.name}
+                    fallback={genre.image}
                     alt={genre.name}
                     className="w-full h-48 object-cover"
                   />
@@ -551,8 +586,10 @@ export default function CulturePage() {
                   className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow"
                 >
                   <div className="relative">
-                    <img 
-                      src={movie.image} 
+                    <WikiImage
+                      id={movie.wikidataId}
+                      term={movie.term || movie.name}
+                      fallback={movie.image}
                       alt={movie.name}
                       className="w-full h-48 object-cover"
                     />

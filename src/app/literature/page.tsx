@@ -14,9 +14,11 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useThemeClasses } from '@/lib/themes/provider';
-import { toBengaliNumber } from '@/lib/bengali/index';
+import { toBengaliNumber } from '@/lib/bengali';
+import { getBengaliAuthors, Author, getWikiSummary } from '@/lib/wiki';
+import { WikiImage } from '@/components/WikiImage';
 
-// Mock literature data
+// Mock literature data for books
 const LITERATURE_CATEGORIES = {
   'কবিতা': { 
     icon: Feather, 
@@ -51,18 +53,21 @@ const LITERATURE_WORKS = {
       rating: 5,
       reviews: 1250,
       quotes: ['তোমার খোলা হাত ছুঁয়ে দেখি এই বিশ্ব', 'আমার এ পথ চাওয়া তোমারই চাওয়া'],
-      cover: '/api/placeholder/200/300'
+      cover: 'https://placehold.co/200x300',
+      wikidataId: 'Q403753'
     },
     {
       id: 2,
       title: 'বিদ্রোহী',
+      term: 'বিদ্রোহী (কবিতা)',
       author: 'কাজী নজরুল ইসলাম',
       year: 1922,
       description: 'বিদ্রোহী কবি হিসেবে নজরুলের আত্মপ্রকাশ। সামাজিক অন্যায়ের বিরুদ্ধে জেগে ওঠার ডাক।',
       rating: 5,
       reviews: 980,
       quotes: ['বিদ্রোহী, আমি বিদ্রোহী বলেছি', 'চল্ চল্ চল্, রে চল্ চল্ চল্'],
-      cover: '/api/placeholder/200/300'
+      cover: 'https://placehold.co/200x300',
+      wikidataId: 'Q4904222'
     },
     {
       id: 3,
@@ -73,7 +78,8 @@ const LITERATURE_WORKS = {
       rating: 5,
       reviews: 756,
       quotes: ['বনলতা সেন', 'অশ্বারোহী স্মৃতি'],
-      cover: '/api/placeholder/200/300'
+      cover: 'https://placehold.co/200x300',
+      wikidataId: 'Q4853874'
     },
     {
       id: 8,
@@ -84,7 +90,8 @@ const LITERATURE_WORKS = {
       rating: 5,
       reviews: 1500,
       quotes: ['চিত্ত যেথা ভয়শূন্য, উচ্চ যেথা শির'],
-      cover: '/api/placeholder/200/300'
+      cover: 'https://placehold.co/200x300',
+      wikidataId: 'Q7415609'
     },
     {
       id: 9,
@@ -95,7 +102,8 @@ const LITERATURE_WORKS = {
       rating: 5,
       reviews: 850,
       quotes: ['বল বীর - বল উন্নত মম শির!'],
-      cover: '/api/placeholder/200/300'
+      cover: 'https://placehold.co/200x300',
+      wikidataId: 'Q4693198'
     }
   ],
   'উপন্যাস': [
@@ -108,7 +116,8 @@ const LITERATURE_WORKS = {
       rating: 5,
       reviews: 2100,
       quotes: ['জীবনের যা হয়, ভালোর জন্যই হয়'],
-      cover: '/api/placeholder/200/300'
+      cover: 'https://placehold.co/200x300',
+      wikidataId: 'Q3349658'
     },
     {
       id: 5,
@@ -119,7 +128,7 @@ const LITERATURE_WORKS = {
       rating: 5,
       reviews: 1850,
       quotes: ['সংসারের সুখ আমি চাই না'],
-      cover: '/api/placeholder/200/300'
+      cover: 'https://placehold.co/200x300'
     },
     {
       id: 10,
@@ -130,7 +139,8 @@ const LITERATURE_WORKS = {
       rating: 5,
       reviews: 1200,
       quotes: ['কুবের মাঝি'],
-      cover: '/api/placeholder/200/300'
+      cover: 'https://placehold.co/200x300',
+      wikidataId: 'Q3349660'
     }
   ],
   'নাটক': [
@@ -143,18 +153,21 @@ const LITERATURE_WORKS = {
       rating: 5,
       reviews: 650,
       quotes: ['আমি রাজপথে চলতে চাই না'],
-      cover: '/api/placeholder/200/300'
+      cover: 'https://placehold.co/200x300',
+      wikidataId: 'Q7286786'
     },
     {
       id: 11,
       title: 'নবান্ন',
+      term: 'নবান্ন (নাটক)',
       author: 'বিজন ভট্টাচার্য',
       year: 1944,
       description: 'পঞ্চাশের মন্বন্তরের পটভূমিতে রচিত একটি যুগান্তকারী নাটক।',
       rating: 5,
       reviews: 350,
       quotes: ['দুর্ভিক্ষের নাটক'],
-      cover: '/api/placeholder/200/300'
+      cover: 'https://placehold.co/200x300',
+      wikidataId: 'Q6956743'
     }
   ],
   'লোকসাহিত্য': [
@@ -167,63 +180,23 @@ const LITERATURE_WORKS = {
       rating: 5,
       reviews: 420,
       quotes: ['মহুয়া সুন্দরী'],
-      cover: '/api/placeholder/200/300'
+      cover: 'https://placehold.co/200x300',
+      wikidataId: 'Q3346123'
     }
   ]
 };
 
-const FAMOUS_AUTHORS = [
-  {
-    id: 1,
-    name: 'রবীন্দ্রনাথ ঠাকুর',
-    birth: 1861,
-    death: 1941,
-    works: 2230,
-    description: 'বাংলা সাহিত্যের অপরিহার্য ব্যক্তিত্ব। গীতাঞ্জলির জন্য নোবেল পুরস্কারপ্রাপ্ত।',
-    avatar: 'https://upload.wikimedia.org/wikipedia/commons/d/d1/Rabindranath_Tagore.jpg',
-    famousWorks: ['গীতাঞ্জলি', 'গোরা', 'চোখের বালি', 'ঘরে বাইরে']
-  },
-  {
-    id: 2,
-    name: 'কাজী নজরুল ইসলাম',
-    birth: 1899,
-    death: 1976,
-    works: 3200,
-    description: 'বিদ্রোহী কবি হিসেবে খ্যাত। বাংলা সাহিত্যে অসামান্য অবদান।',
-    avatar: '/api/placeholder/100/100',
-    famousWorks: ['বিদ্রোহী', 'ধূমকেতু', 'চক্রবাক', 'সিন্দাবাদ']
-  },
-  {
-    id: 3,
-    name: 'শরৎচন্দ্র চট্টোপাধ্যায়',
-    birth: 1876,
-    death: 1938,
-    works: 36,
-    description: 'বাংলা উপন্যাসের অগ্রদূত। সামাজিক উপন্যাসের জনক।',
-    avatar: '/api/placeholder/100/100',
-    famousWorks: ['পথের দাবী', 'সংসার', 'শ্রীকান্ত', 'গৃহদাহ']
-  },
-  {
-    id: 4,
-    name: 'জীবনানন্দ দাশ',
-    birth: 1899,
-    death: 1954,
-    works: 250, // আনুমানিক সংখ্যা যোগ করা হয়েছে
-    description: 'আধুনিক বাংলা কবিতার প্রধান পুরোধা। অদ্ভুতুড়ে কবিতার স্রষ্টা।',
-    avatar: '/api/placeholder/100/100',
-    famousWorks: ['বনলতা সেন', 'মহাপৃথিবী', 'সাতটি তারার তিমির', 'শেষ প্রশ্ন']
-  },
-  {
-    id: 5,
-    name: 'সত্যজিৎ রায়',
-    birth: 1921,
-    death: 1992,
-    works: 50,
-    description: 'চলচ্চিত্র নির্মাতা, লেখক, এবং চিত্রকর। ফেলুদা ও প্রফেসর শঙ্কু চরিত্রের স্রষ্টা।',
-    avatar: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Satyajit_Ray_in_New_York_(cropped).jpg/250px-Satyajit_Ray_in_New_York_(cropped).jpg',
-    famousWorks: ['পথের পাঁচালী', 'ফেলুদা', 'প্রোফেসর শঙ্কু', 'সোনার কেল্লা']
-  }
-];
+// Interface for Author display
+interface AuthorDisplay {
+  id: string;
+  name: string;
+  birth: string | number;
+  death: string | number;
+  works: number;
+  description: string;
+  avatar: string;
+  famousWorks: string[];
+}
 
 function BookCard({ book, category }) {
   const classes = useThemeClasses();
@@ -238,8 +211,10 @@ function BookCard({ book, category }) {
     >
       <Card className="overflow-hidden h-full">
         <div className="relative">
-          <img 
-            src={book.cover} 
+          <WikiImage
+            id={book.wikidataId}
+            term={book.term || book.title}
+            fallback={book.cover}
             alt={book.title}
             className="w-full h-64 object-cover"
           />
@@ -282,7 +257,7 @@ function BookCard({ book, category }) {
   );
 }
 
-function AuthorSpotlight({ author }) {
+function AuthorSpotlight({ author }: { author: AuthorDisplay }) {
   const classes = useThemeClasses();
 
   return (
@@ -291,17 +266,20 @@ function AuthorSpotlight({ author }) {
       className="bg-white rounded-lg p-6 shadow-lg hover:shadow-xl transition-shadow"
     >
       <div className="flex items-start space-x-4">
-        <img 
-          src={author.avatar} 
+         <img
+          src={author.avatar || 'https://placehold.co/100x100'}
           alt={author.name}
           className="w-20 h-20 rounded-full object-cover"
+          onError={(e) => {
+            (e.target as HTMLImageElement).src = 'https://placehold.co/100x100';
+          }}
         />
         <div className="flex-1">
           <h3 className="text-xl font-bold mb-1 font-bengali">{author.name}</h3>
           <p className="text-sm text-gray-600 mb-2">
             {toBengaliNumber(author.birth)} - {toBengaliNumber(author.death)}
           </p>
-          <p className="text-sm text-gray-700 mb-3 font-bengali-serif">{author.description}</p>
+          <p className="text-sm text-gray-700 mb-3 font-bengali-serif line-clamp-3">{author.description}</p>
           
           <div className="mb-3">
             <span className="text-sm font-semibold text-gray-900">উল্লেখযোগ্য কর্ম:</span>
@@ -326,7 +304,41 @@ function AuthorSpotlight({ author }) {
 export default function LiteraturePage() {
   const [selectedCategory, setSelectedCategory] = useState('কবিতা');
   const [searchTerm, setSearchTerm] = useState('');
+  const [authors, setAuthors] = useState<AuthorDisplay[]>([]);
   const classes = useThemeClasses();
+
+  useEffect(() => {
+    async function fetchAuthors() {
+      try {
+        const fetchedAuthors = await getBengaliAuthors();
+
+        const authorPromises = fetchedAuthors.map(async (author) => {
+          let description = author.description;
+          if (!description) {
+            description = await getWikiSummary(author.name) || 'বিখ্যাত বাঙালি সাহিত্যিক';
+          }
+
+          return {
+            id: author.id,
+            name: author.name,
+            birth: author.birthDate || 'অজানা',
+            death: author.deathDate || 'বর্তমান',
+            works: author.worksCount || 0,
+            description: description,
+            avatar: author.image || 'https://placehold.co/100x100',
+            famousWorks: []
+          };
+        });
+
+        const processedAuthors = await Promise.all(authorPromises);
+        setAuthors(processedAuthors);
+      } catch (error) {
+        console.error("Error fetching authors:", error);
+      }
+    }
+
+    fetchAuthors();
+  }, []);
 
   const filteredWorks = LITERATURE_WORKS[selectedCategory]?.filter(book =>
     book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -433,9 +445,15 @@ export default function LiteraturePage() {
           </motion.div>
 
           <div className="grid md:grid-cols-2 gap-8">
-            {FAMOUS_AUTHORS.map((author) => (
-              <AuthorSpotlight key={author.id} author={author} />
-            ))}
+            {authors.length > 0 ? (
+              authors.map((author) => (
+                <AuthorSpotlight key={author.id} author={author} />
+              ))
+            ) : (
+              <div className="col-span-2 text-center text-gray-500 py-10">
+                তথ্য লোড হচ্ছে...
+              </div>
+            )}
           </div>
         </section>
       </div>
