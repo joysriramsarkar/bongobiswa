@@ -25,7 +25,7 @@ const TEAM_MEMBERS = [
     name: 'ড. অনিক রহমান',
     role: 'প্রতিষ্ঠাতা ও সিইও',
     bio: 'বাংলা ভাষা প্রযুক্তি ও ডিজিটাল সংরক্ষণের অন্যতম পথিকৃৎ। ১৫ বছরের অভিজ্ঞতা।',
-    avatar: '/api/placeholder/100/100',
+    avatar: 'https://placehold.co/100x100',
     social: {
       github: 'https://github.com/anikrahman',
       linkedin: 'https://linkedin.com/in/anikrahman',
@@ -38,7 +38,7 @@ const TEAM_MEMBERS = [
     name: 'প্রিয়া সেনগুপ্ত',
     role: 'প্রধান প্রযুক্তি কর্মকর্তা',
     bio: 'আধুনিক ওয়েব প্রযুক্তি ও ব্যবহারকারী অভিজ্ঞতা ডিজাইনের বিশেষজ্ঞ।',
-    avatar: '/api/placeholder/100/100',
+    avatar: 'https://placehold.co/100x100',
     social: {
       github: 'https://github.com/priyasengupta',
       linkedin: 'https://linkedin.com/in/priyasengupta',
@@ -51,7 +51,7 @@ const TEAM_MEMBERS = [
     name: 'অধ্যাপক কামরুল হাসান',
     role: 'একাডেমিক উপদেষ্টা',
     bio: 'বাংলা সাহিত্য ও ইতিহাসের খ্যাতনামা গবেষক। ৩০টি গ্রন্থের রচয়িতা।',
-    avatar: '/api/placeholder/100/100',
+    avatar: 'https://placehold.co/100x100',
     social: {
       github: 'https://github.com/kamrulhasan',
       linkedin: 'https://linkedin.com/in/kamrulhasan'
@@ -63,7 +63,7 @@ const TEAM_MEMBERS = [
     name: 'তাসনিম আক্তার',
     role: 'কন্টেন্ট কিউরেটর',
     bio: 'বাংলা সংস্কৃতি ও লোকঐতিহ্যের গবেষক। ডিজিটাল সংরক্ষণে অবদান।',
-    avatar: '/api/placeholder/100/100',
+    avatar: 'https://placehold.co/100x100',
     social: {
       github: 'https://github.com/tasnimakhter',
       linkedin: 'https://linkedin.com/in/tasnimakhter',

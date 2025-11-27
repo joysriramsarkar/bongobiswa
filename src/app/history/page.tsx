@@ -24,7 +24,7 @@ const HISTORICAL_EVENTS = [
     period: 'প্রাচীন যুগ',
     category: 'রাজনীতি',
     location: 'গৌড়',
-    image: '/api/placeholder/400/300',
+    image: 'https://placehold.co/400x300',
     details: {
       ruler: 'গোপাল প্রথম',
       significance: 'বৌদ্ধ ধর্মের পৃষ্ঠপোষকতা',
@@ -39,7 +39,7 @@ const HISTORICAL_EVENTS = [
     period: 'মধ্যযুগ',
     category: 'রাজনীতি',
     location: 'নদিয়া',
-    image: '/api/placeholder/400/300',
+    image: 'https://placehold.co/400x300',
     details: {
       ruler: 'মুহাম্মদ বখতিয়ার খিলজি',
       significance: 'ইসলামিক শাসনের সূচনা',
@@ -54,7 +54,7 @@ const HISTORICAL_EVENTS = [
     period: 'মধ্যযুগ',
     category: 'যুদ্ধ',
     location: 'রাজমহল',
-    image: '/api/placeholder/400/300',
+    image: 'https://placehold.co/400x300',
     details: {
       ruler: 'দাউদ খান কররানী',
       significance: 'বাংলায় মুঘল শাসনের সূচনা',
@@ -69,7 +69,7 @@ const HISTORICAL_EVENTS = [
     period: 'ঔপনিবেশিক যুগ',
     category: 'যুদ্ধ',
     location: 'পলাশী',
-    image: '/api/placeholder/400/300',
+    image: 'https://placehold.co/400x300',
     details: {
       ruler: 'নবাব সিরাজউদ্দৌলা',
       significance: 'ব্রিটিশ ঔপনিবেশিক শাসনের সূচনা',
@@ -84,7 +84,7 @@ const HISTORICAL_EVENTS = [
     period: 'আধুনিক যুগ',
     category: 'রাজনীতি',
     location: 'কলকাতা',
-    image: '/api/placeholder/400/300',
+    image: 'https://placehold.co/400x300',
     details: {
       ruler: 'লর্ড কার্জন',
       significance: 'স্বাধীনতা আন্দোলনের সূচনা',
@@ -99,7 +99,7 @@ const HISTORICAL_EVENTS = [
     period: 'আধুনিক যুগ',
     category: 'সামাজিক',
     location: 'ঢাকা',
-    image: '/api/placeholder/400/300',
+    image: 'https://placehold.co/400x300',
     details: {
       ruler: 'পাকিস্তান সরকার',
       significance: 'বাংলা ভাষার স্বীকৃতি',
@@ -114,7 +114,7 @@ const HISTORICAL_EVENTS = [
     period: 'স্বাধীনতা যুগ',
     category: 'যুদ্ধ',
     location: 'সারা বাংলাদেশ',
-    image: '/api/placeholder/400/300',
+    image: 'https://placehold.co/400x300',
     details: {
       ruler: 'শেখ মুজিবুর রহমান',
       significance: 'স্বাধীন বাংলাদেশ প্রতিষ্ঠা',
@@ -194,9 +194,10 @@ function TimelineEvent({ event, index, isSelected, onSelect }) {
 }
 
 function EventModal({ event, isOpen, onClose }) {
+  const classes = useThemeClasses();
+
   if (!event) return null;
 
-  const classes = useThemeClasses();
   const category = CATEGORIES[event.category];
 
   return (
