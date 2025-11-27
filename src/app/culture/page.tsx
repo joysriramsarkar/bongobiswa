@@ -40,6 +40,16 @@ const CULTURE_CATEGORIES = {
     icon: Users, 
     color: 'bg-purple-500',
     description: 'বাংলার ঐতিহ্যবাহী পোশাক ও তাঁতশিল্প'
+  },
+  'গান': {
+    icon: Music,
+    color: 'bg-blue-500',
+    description: 'বাংলার সমৃদ্ধ সংগীত জগত'
+  },
+  'চলচ্চিত্র': {
+    icon: Play,
+    color: 'bg-red-500',
+    description: 'বাংলা চলচ্চিত্রের স্বর্ণযুগ'
   }
 };
 
@@ -206,6 +216,63 @@ const TRADITIONAL_DRESSES = [
   }
 ];
 
+const MUSIC_GENRES = [
+  {
+    id: 1,
+    name: 'রবীন্দ্রসংগীত',
+    description: 'রবীন্দ্রনাথ ঠাকুর রচিত ও সুরারোপিত গান। বাংলা সংগীতের এক স্বতন্ত্র ধারা।',
+    famousArtists: ['হেমন্ত মুখোপাধ্যায়', ' কণিকা বন্দ্যোপাধ্যায়', 'সুচিত্রা মিত্র'],
+    popularSongs: ['আমার সোনার বাংলা', 'পুরানো সেই দিনের কথা', 'যদি তোর ডাক শুনে কেউ না আসে'],
+    image: '/api/placeholder/300/200'
+  },
+  {
+    id: 2,
+    name: 'নজরুলগীতি',
+    description: 'কাজী নজরুল ইসলাম রচিত ও সুরারোপিত গান। প্রেম, বিদ্রোহ ও আধ্যাত্মিকতার অপূর্ব সমন্বয়।',
+    famousArtists: ['ফিরোজা বেগম', 'সোহরাব হোসেন', 'মানবেন্দ্র মুখোপাধ্যায়'],
+    popularSongs: ['মোর প্রিয়া হবে এসো রানী', 'কারার ঐ লৌহকপাট', 'মসজিদেরই পাশে আমার কবর দিও ভাই'],
+    image: '/api/placeholder/300/200'
+  },
+  {
+    id: 3,
+    name: 'বাউল সংগীত',
+    description: 'বাংলার লোকসংগীতের এক আধ্যাত্মিক ধারা। লালন শাহ এই ধারার প্রধান পুরুষ।',
+    famousArtists: ['লালন শাহ', 'শাহ আব্দুল করিম', 'পবন দাস বাউল'],
+    popularSongs: ['মিলন হবে কত দিনে', 'খাঁচার ভিতর অচিন পাখি', 'গাড়ি চলে না'],
+    image: '/api/placeholder/300/200'
+  }
+];
+
+const CLASSIC_MOVIES = [
+  {
+    id: 1,
+    name: 'পথের পাঁচালী',
+    director: 'সত্যজিৎ রায়',
+    year: 1955,
+    description: 'বিভূতিভূষণ বন্দ্যোপাধ্যায়ের উপন্যাস অবলম্বনে নির্মিত। অপু ট্রিলজির প্রথম চলচ্চিত্র।',
+    awards: ['কান চলচ্চিত্র উৎসবে শ্রেষ্ঠ মানব প্রামাণ্যচিত্র পুরস্কার'],
+    image: '/api/placeholder/400/300'
+  },
+  {
+    id: 2,
+    name: 'তিতাস একটি নদীর নাম',
+    director: 'ঋত্বিক ঘটক',
+    year: 1973,
+    description: 'অদ্বৈত মল্লবর্মণের উপন্যাস অবলম্বনে নির্মিত। মালো সম্প্রদায়ের জীবনচিত্র।',
+    awards: ['Sight & Sound ম্যাগাজিনের জরিপে সর্বকালের সেরা ১০টি বাংলাদেশী চলচ্চিত্রের একটি'],
+    image: '/api/placeholder/400/300'
+  },
+  {
+    id: 3,
+    name: 'জীবন থেকে নেয়া',
+    director: 'জহির রায়হান',
+    year: 1970,
+    description: '১৯৫২ সালের ভাষা আন্দোলনকে কেন্দ্র করে নির্মিত একটি রূপকধর্মী চলচ্চিত্র।',
+    awards: ['শ্রেষ্ঠ চলচ্চিত্র, পাকিস্তান চলচ্চিত্র উৎসব'],
+    image: '/api/placeholder/400/300'
+  }
+];
+
 function FestivalCard({ festival }) {
   const classes = useThemeClasses();
 
@@ -315,7 +382,7 @@ export default function CulturePage() {
       <div className="container mx-auto px-4 py-12">
         <Tabs value={selectedCategory} onValueChange={setSelectedCategory} className="space-y-8">
           {/* Category Tabs */}
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 md:grid-cols-6">
             {Object.keys(CULTURE_CATEGORIES).map((category) => {
               const CategoryIcon = CULTURE_CATEGORIES[category].icon;
               return (
@@ -441,6 +508,73 @@ export default function CulturePage() {
               ))}
             </div>
           </TabsContent>
+
+          <TabsContent value="গান" className="space-y-8">
+            <div className="grid md:grid-cols-3 gap-6">
+              {MUSIC_GENRES.map((genre) => (
+                <motion.div
+                  key={genre.id}
+                  whileHover={{ scale: 1.05 }}
+                  className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow"
+                >
+                  <img 
+                    src={genre.image} 
+                    alt={genre.name}
+                    className="w-full h-48 object-cover"
+                  />
+                  <div className="p-4">
+                    <h3 className="text-lg font-bold mb-2 font-bengali">{genre.name}</h3>
+                    <p className="text-sm text-gray-700 mb-3 font-bengali-serif">{genre.description}</p>
+                    
+                    <div className="mb-2">
+                      <span className="text-sm font-semibold text-gray-900">বিখ্যাত শিল্পী:</span>
+                      <div className="flex flex-wrap gap-1 mt-1">
+                        {genre.famousArtists.map((artist, index) => (
+                          <Badge key={index} variant="outline" className="text-xs">
+                            {artist}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="চলচ্চিত্র" className="space-y-8">
+            <div className="grid md:grid-cols-3 gap-8">
+              {CLASSIC_MOVIES.map((movie) => (
+                <motion.div
+                  key={movie.id}
+                  whileHover={{ scale: 1.05 }}
+                  className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow"
+                >
+                  <div className="relative">
+                    <img 
+                      src={movie.image} 
+                      alt={movie.name}
+                      className="w-full h-48 object-cover"
+                    />
+                    <div className="absolute top-2 right-2 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bengali">
+                      {toBengaliNumber(movie.year)}
+                    </div>
+                  </div>
+                  
+                  <div className="p-6">
+                    <h3 className="text-xl font-bold mb-2 font-bengali">{movie.name}</h3>
+                    <p className="text-sm text-gray-600 mb-3 font-bengali-serif">পরিচালক: {movie.director}</p>
+                    <p className="text-gray-700 mb-4 font-bengali-serif">{movie.description}</p>
+                    
+                    <div className="text-sm text-gray-600">
+                      <span className="font-semibold">পুরস্কার:</span> {movie.awards.join(', ')}
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </TabsContent>
+
         </Tabs>
       </div>
     </div>

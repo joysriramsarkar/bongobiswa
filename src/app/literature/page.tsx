@@ -74,6 +74,28 @@ const LITERATURE_WORKS = {
       reviews: 756,
       quotes: ['বনলতা সেন', 'অশ্বারোহী স্মৃতি'],
       cover: '/api/placeholder/200/300'
+    },
+    {
+      id: 8,
+      title: 'সঞ্চয়িতা',
+      author: 'রবীন্দ্রনাথ ঠাকুর',
+      year: 1931,
+      description: 'রবীন্দ্রনাথের কবিতা সমগ্র। বাংলা কবিতার এক বিশাল সংগ্রহ।',
+      rating: 5,
+      reviews: 1500,
+      quotes: ['চিত্ত যেথা ভয়শূন্য, উচ্চ যেথা শির'],
+      cover: '/api/placeholder/200/300'
+    },
+    {
+      id: 9,
+      title: 'অগ্নিবীণা',
+      author: 'কাজী নজরুল ইসলাম',
+      year: 1922,
+      description: 'বিদ্রোহ, প্রেম ও মানবতার কবিতা। নজরুলের প্রথম কাব্যগ্রন্থ।',
+      rating: 5,
+      reviews: 850,
+      quotes: ['বল বীর - বল উন্নত মম শির!'],
+      cover: '/api/placeholder/200/300'
     }
   ],
   'উপন্যাস': [
@@ -98,6 +120,17 @@ const LITERATURE_WORKS = {
       reviews: 1850,
       quotes: ['সংসারের সুখ আমি চাই না'],
       cover: '/api/placeholder/200/300'
+    },
+    {
+      id: 10,
+      title: 'পদ্মা নদীর মাঝি',
+      author: 'মানিক বন্দ্যোপাধ্যায়',
+      year: 1936,
+      description: 'জেলে জীবনের কঠিন বাস্তবতা ও সংগ্রামের কাহিনি।',
+      rating: 5,
+      reviews: 1200,
+      quotes: ['কুবের মাঝি'],
+      cover: '/api/placeholder/200/300'
     }
   ],
   'নাটক': [
@@ -110,6 +143,17 @@ const LITERATURE_WORKS = {
       rating: 5,
       reviews: 650,
       quotes: ['আমি রাজপথে চলতে চাই না'],
+      cover: '/api/placeholder/200/300'
+    },
+    {
+      id: 11,
+      title: 'নবান্ন',
+      author: 'বিজন ভট্টাচার্য',
+      year: 1944,
+      description: 'পঞ্চাশের মন্বন্তরের পটভূমিতে রচিত একটি যুগান্তকারী নাটক।',
+      rating: 5,
+      reviews: 350,
+      quotes: ['দুর্ভিক্ষের নাটক'],
       cover: '/api/placeholder/200/300'
     }
   ],
