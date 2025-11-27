@@ -30,3 +30,45 @@ model Post {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+// ইতিহাস মডিউলের জন্য
+model HistoryEvent {
+  id          String   @id @default(cuid())
+  title       String
+  year        Int
+  description String
+  category    String   // রাজনীতি, যুদ্ধ, সামাজিক, সংস্কৃতি
+  location    String?
+  imageUrl    String?
+  sourceUrl   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// সাহিত্য মডিউলের জন্য
+model LiteratureWork {
+  id            String   @id @default(cuid())
+  title         String
+  author        String
+  type          String   // কবিতা, উপন্যাস, নাটক, ছোটগল্প
+  publishedYear Int?
+  description   String?
+  coverImage    String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+// গানের ডেটাবেস
+model Song {
+  id          String   @id @default(cuid())
+  title       String
+  artist      String
+  lyrics      String?
+  genre       String?  // রবীন্দ্রসংগীত, নজরুলগীতি, লোকগীতি
+  composer    String?
+  year        Int?
+  audioUrl    String?
+  videoUrl    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
