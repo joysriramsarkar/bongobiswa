@@ -1,14 +1,21 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Noto_Sans_Bengali, Noto_Serif_Bengali } from "next/font/google";
 import { headers } from "next/headers";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "@/lib/themes/provider";
 import { Navbar } from "@/components/layout/navbar";
 
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const noto_sans_bengali = Noto_Sans_Bengali({
+  subsets: ["bengali"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-noto-sans-bengali",
+});
+const noto_serif_bengali = Noto_Serif_Bengali({
+  subsets: ["bengali"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-noto-serif-bengali",
 });
 
 export const metadata: Metadata = {
@@ -43,16 +50,9 @@ export default async function RootLayout({
 
   return (
     <html lang="bn" suppressHydrationWarning>
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link 
-          href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@300;400;500;600;700&family=Noto+Serif+Bengali:wght@300;400;500;600;700&display=swap" 
-          rel="stylesheet" 
-        />
-      </head>
       <body
-        className={`${inter.variable} font-sans antialiased`}
+        className={`${inter.variable} ${noto_sans_bengali.variable} ${noto_serif_bengali.variable} font-sans antialiased`}
+        data-gramm="false"
       >
         <ThemeProvider pathname={pathname}>
           <div className="relative min-h-screen">
