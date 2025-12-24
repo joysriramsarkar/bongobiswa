@@ -14,6 +14,24 @@ import { Badge } from '@/components/ui/badge';
 import { useThemeClasses } from '@/lib/themes/provider';
 import { toBengaliNumber, formatBengaliDate } from '@/lib/bengali/index';
 
+type HistoryEvent = {
+  id: string;
+  title: string;
+  year: number;
+  description: string;
+  category: string;
+  location: string | null;
+  imageUrl: string | null;
+  sourceUrl: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+  period?: string;
+  details?: {
+    ruler?: string;
+    significance?: string;
+  };
+};
+
 const CATEGORIES = {
   'রাজনীতি': { icon: Crown, color: 'bg-amber-600' },
   'যুদ্ধ': { icon: Sword, color: 'bg-red-600' },
@@ -179,7 +197,7 @@ function EventModal({ event, isOpen, onClose }) {
   );
 }
 
-export default function HistoryClient({ events = [] }) {
+export default function HistoryClient({ events = [] }: { events: HistoryEvent[] }) {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAutoPlay, setIsAutoPlay] = useState(false);

@@ -54,6 +54,21 @@ interface AuthorDisplay {
   famousWorks: string[];
 }
 
+// Interface for Literature Work
+interface LiteratureWork {
+  id: string;
+  title: string;
+  author: string;
+  type: string;
+  publishedYear: number | null;
+  description: string | null;
+  coverImage: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+  wikidataId?: string;
+  term?: string;
+}
+
 function BookCard({ book, category }) {
   const classes = useThemeClasses();
   const [isHovered, setIsHovered] = useState(false);
@@ -157,11 +172,11 @@ function AuthorSpotlight({ author }: { author: AuthorDisplay }) {
   );
 }
 
-export default function LiteratureClient({ initialWorks = [], initialAuthors = [] }) {
+export default function LiteratureClient({ initialWorks = [], initialAuthors = [] }: { initialWorks: LiteratureWork[], initialAuthors: AuthorDisplay[] }) {
   const [selectedCategory, setSelectedCategory] = useState('কবিতা');
   const [searchTerm, setSearchTerm] = useState('');
   const [authors, setAuthors] = useState<AuthorDisplay[]>(initialAuthors);
-  const [works, setWorks] = useState<any[]>(initialWorks);
+  const [works, setWorks] = useState<LiteratureWork[]>(initialWorks);
   const classes = useThemeClasses();
 
   useEffect(() => {

@@ -64,7 +64,6 @@ const MODULES = [
 
 function HeroSection() {
   const { scrollY } = useScroll();
-  const { classes } = useThemeClasses();
   
   const yRange = useTransform(scrollY, [0, 500], [0, -150]);
   const opacity = useTransform(scrollY, [0, 300], [1, 0]);
@@ -184,7 +183,6 @@ function HeroSection() {
 }
 
 function StatsSection() {
-  const { classes } = useThemeClasses();
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -225,8 +223,6 @@ function StatsSection() {
 }
 
 function ModulesSection() {
-  const { classes } = useThemeClasses();
-
   return (
     <section className="py-20 bg-gray-50">
       <div className="container mx-auto px-4">

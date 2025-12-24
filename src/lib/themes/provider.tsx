@@ -104,7 +104,7 @@ export function useTheme() {
 export function useThemeClasses() {
   const { context, themeConfig } = useTheme();
   
-  return {
+  const classes = {
     background: `bg-[${themeConfig.colors.background}] ${themeConfig.styles.backgroundPattern || ''}`,
     surface: `bg-[${themeConfig.colors.surface}] ${themeConfig.styles.borderRadius} ${themeConfig.styles.boxShadow}`,
     text: `text-[${themeConfig.colors.text}] ${themeConfig.fonts.primary}`,
@@ -120,4 +120,6 @@ export function useThemeClasses() {
     hoverEffects: themeConfig.animations.hoverEffects,
     scrollEffects: themeConfig.animations.scrollEffects,
   };
+
+  return { classes };
 }
